@@ -1,0 +1,315 @@
+/**
+ * Scoped styles for the Onylogy Font Checker overlay. Mounted inside a
+ * Shadow DOM with adoptedStyleSheets, so these don't leak to the host page.
+ *
+ * Two card variants:
+ *   .card.hover  → small floating tooltip, family name only, follows cursor.
+ *   .card.pinned → full data card, anchored to the document, scrolls with
+ *                  the page (positioning handled in mount.tsx via motion
+ *                  values on top of scrollX/scrollY).
+ *
+ * Both variants share a frosted-glass background: rgba + backdrop-filter
+ * blur for a modern semi-transparent feel that still passes AA when text
+ * sits over arbitrary page content.
+ */
+
+:host {
+  all: initial;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.overlay-root {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2147483647;
+  font-family: Montserrat, 'Inter', ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', Roboto, sans-serif;
+
+  /* ─────────────  Light (default)  ───────────── */
+  --o-bg: rgba(255, 255, 255, 0.86);
+  --o-bg-solid: #ffffff;
+  --o-elev: #f7f8fb;
+  --o-line: rgba(13, 20, 36, 0.12);
+  --o-fg: #0d1424;
+  --o-muted: #4b5468;
+  --o-dim: #6e7585;
+  --o-accent: #004bd1;
+  --o-accent-soft: rgba(0, 75, 209, 0.1);
+  --o-shadow: 0 16px 48px -16px rgba(0, 75, 209, 0.22),
+    0 6px 18px -8px rgba(15, 23, 42, 0.16);
+}
+
+.overlay-root[data-theme='dark'] {
+  --o-bg: rgba(12, 14, 20, 0.78);
+  --o-bg-solid: #0c0e14;
+  --o-elev: #181b27;
+  --o-line: rgba(255, 255, 255, 0.14);
+  --o-fg: #ffffff;
+  --o-muted: #d8dde8;
+  --o-dim: #aab1c0;
+  --o-accent: #5a95ff;
+  --o-accent-soft: rgba(90, 149, 255, 0.18);
+  --o-shadow: 0 16px 48px -12px rgba(0, 0, 0, 0.65),
+    0 4px 14px -6px rgba(0, 0, 0, 0.4);
+}
+
+.font-display {
+  font-family: 'Bricolage Grotesque', 'Inter', ui-sans-serif, system-ui,
+    sans-serif;
+  font-weight: 600;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-feature-settings: 'tnum' 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ───────────────────────────  Card (shared)  ───────────────────────── */
+
+.card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: var(--o-bg);
+  color: var(--o-fg);
+  border: 1px solid var(--o-line);
+  border-radius: 14px;
+  box-shadow: var(--o-shadow);
+  will-change: transform;
+  /* Frosted glass — gracefully degrades to the solid rgba color on browsers
+     that don't support backdrop-filter (a few older Linux Chromiums). */
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+}
+
+/* Floating (hover) — compact, family-only, viewport-anchored. */
+.card.hover {
+  min-width: 0;
+  width: max-content;
+  max-width: 320px;
+  padding: 8px 12px;
+  pointer-events: none;
+}
+
+/* Pinned — full data card, document-anchored. */
+.card.pinned {
+  min-width: 260px;
+  max-width: 340px;
+  padding: 14px 16px;
+  pointer-events: auto;
+}
+
+/* Tighten the first row when the close button is present so its visual
+   weight pairs with the row label rather than overlapping the content. */
+.card.pinned .card-body > .row:first-child {
+  padding-right: 22px;
+}
+
+/* ─────────────────────  Floating body (hover)  ─────────────────────── */
+
+.floating-body {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--o-fg);
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.floating-body .font-name {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+/* ─────────────────────  Pinned body (rows)  ─────────────────────────── */
+
+.card-body {
+  /* No top padding; .card.pinned already gives 22px. */
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 70px 1fr 18px;
+  gap: 6px 10px;
+  font-size: 11px;
+  line-height: 1.5;
+  align-items: center;
+  min-height: 20px;
+}
+
+.row + .row {
+  margin-top: 4px;
+}
+
+.label {
+  color: var(--o-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.value {
+  color: var(--o-fg);
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-feature-settings: 'tnum' 1;
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.value.dim {
+  color: var(--o-muted);
+  font-weight: 400;
+}
+
+.accent-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--o-accent);
+  flex-shrink: 0;
+}
+
+.color-swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  border: 1px solid var(--o-line);
+  flex-shrink: 0;
+}
+
+/* ─────────────────────  Copy button (per row)  ─────────────────────── */
+
+.copy-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--o-muted);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+  pointer-events: auto;
+}
+
+.copy-btn:hover {
+  color: var(--o-accent);
+  background: var(--o-accent-soft);
+}
+
+.copy-btn:active {
+  transform: scale(0.92);
+}
+
+.copy-btn.copied {
+  color: var(--o-accent);
+}
+
+.copy-btn svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ─────────────────  Close button (pinned cards only)  ──────────────── */
+
+/* Subtle, transparent at rest — paints up on hover with the brand tint.
+   Positioned slightly inside the card edge so it has breathing room and
+   never overlaps the first data row (which gets reserved right-padding
+   via .card.pinned .card-body > .row:first-child). */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--o-dim);
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+}
+
+.close-btn:hover {
+  color: var(--o-accent);
+  background: var(--o-accent-soft);
+}
+
+.close-btn:active {
+  transform: scale(0.9);
+}
+
+.close-btn svg {
+  width: 11px;
+  height: 11px;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ─────────────────  Pin hint (floating card footer)  ────────────────── */
+
+.pin-hint {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--o-line);
+  font-size: 10px;
+  color: var(--o-dim);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 4px;
+  min-width: 14px;
+  height: 14px;
+  border: 1px solid var(--o-line);
+  border-radius: 3px;
+  background: var(--o-elev);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  color: var(--o-muted);
+  line-height: 1;
+}
