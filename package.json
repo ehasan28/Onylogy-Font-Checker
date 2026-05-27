@@ -1,7 +1,7 @@
 {
   "name": "onylogy-font-checker",
   "displayName": "Onylogy Font Checker",
-  "description": "Onylogy Font Checker by Ehasanul Haque — live font inspector, pin-on-click cards, hierarchy detection, source attribution, accessibility analysis, and developer exports.",
+  "description": "Identify any font on any website. Inspect typography, detect Google Fonts, run readability checks, export design tokens.",
   "author": "Ehasanul Haque",
   "homepage": "https://github.com/ehasan28",
   "private": true,

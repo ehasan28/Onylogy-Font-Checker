@@ -4,8 +4,10 @@ export default defineConfig({
   modules: ['@wxt-dev/module-react'],
   manifest: {
     name: 'Onylogy Font Checker',
+    // Chrome Web Store caps the manifest description at 132 characters.
+    // Long-form copy lives in the Dashboard listing (see STORE-LISTING.md).
     description:
-      'Onylogy Font Checker by Ehasanul Haque — live font inspector, pin-on-click cards, hierarchy detection, source attribution, accessibility analysis, and developer exports.',
+      'Identify any font on any website. Inspect typography, detect Google Fonts, run readability checks, export design tokens.',
     version: '0.2.0',
     permissions: ['activeTab', 'scripting', 'storage'],
     action: {
