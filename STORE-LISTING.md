@@ -205,7 +205,7 @@ Store — every star helps another designer or developer find it.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-VERSION 0.2.0
+VERSION 0.2.1
 
   •  Light / dark theme toggle (light by default).
   •  Pin-on-click cards that scroll with the page content.
@@ -215,6 +215,7 @@ VERSION 0.2.0
   •  Escape clears inspect mode and pinned cards.
   •  AA-verified contrast in both themes.
   •  Six export formats including responsive clamp() and Kadence.
+  •  Content script registers at runtime — zero host permissions.
 
 Made with care. Use it daily.
 ```

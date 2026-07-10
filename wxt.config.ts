@@ -2,13 +2,25 @@ import { defineConfig } from 'wxt';
 
 export default defineConfig({
   modules: ['@wxt-dev/module-react'],
+  // Post-process the generated manifest so any `host_permissions` value
+  // WXT auto-computed from the content script's `matches` is stripped out.
+  // The script is registered at runtime and injected via
+  // chrome.scripting.executeScript on the active tab only — `activeTab`
+  // alone is sufficient, so we publish with zero host permissions.
+  // Without this, the Chrome Web Store flags the listing as "may require
+  // in-depth review due to host permission" and delays publication.
+  hooks: {
+    'build:manifestGenerated': (_wxt, manifest) => {
+      delete (manifest as { host_permissions?: unknown }).host_permissions;
+    },
+  },
   manifest: {
     name: 'Onylogy Font Checker',
     // Chrome Web Store caps the manifest description at 132 characters.
     // Long-form copy lives in the Dashboard listing (see STORE-LISTING.md).
     description:
       'Identify any font on any website. Inspect typography, detect Google Fonts, run readability checks, export design tokens.',
-    version: '0.2.0',
+    version: '0.2.1',
     permissions: ['activeTab', 'scripting', 'storage'],
     action: {
       default_title: 'Onylogy Font Checker',

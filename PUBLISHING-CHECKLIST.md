@@ -1,6 +1,6 @@
 # Chrome Web Store — Publishing Checklist
 
-End-to-end checklist for submitting **Onylogy Font Checker v0.2.0** to
+End-to-end checklist for submitting **Onylogy Font Checker v0.2.1** to
 the Chrome Web Store. Work top-to-bottom; everything is paste-ready.
 
 > **One-time fee reminder:** Chrome charges a US$5 developer registration
@@ -13,7 +13,7 @@ the Chrome Web Store. Work top-to-bottom; everything is paste-ready.
 
 | File | Where | Use for |
 |---|---|---|
-| `onylogy-font-checker-0.2.0-chrome.zip` | `.output/` | The "Upload new package" field on the Dashboard. **265 KB**. |
+| `onylogy-font-checker-0.2.1-chrome.zip` | `.output/` | The "Upload new package" field on the Dashboard. **265 KB**. |
 | `STORE-LISTING.md` | repo root | All copy: name, summary, description, justifications. |
 | `PRIVACY.md` | repo root | Privacy policy. Push to GitHub, then link the raw URL on the Dashboard. |
 | `LICENSE` | repo root | MIT license. |
@@ -79,7 +79,7 @@ Before you upload, sanity-check the package once:
 
 ```bash
 # Unzip into a scratch folder
-unzip -l .output/onylogy-font-checker-0.2.0-chrome.zip
+unzip -l .output/onylogy-font-checker-0.2.1-chrome.zip
 
 # Expected entries:
 #   manifest.json
@@ -115,7 +115,7 @@ Sign in at <https://chrome.google.com/webstore/devconsole/>.
 ### Step 1 — Create a new item
 
 1. Click **New item** at top-right.
-2. Drop in `.output/onylogy-font-checker-0.2.0-chrome.zip`.
+2. Drop in `.output/onylogy-font-checker-0.2.1-chrome.zip`.
 3. Wait for the upload to finish (usually under 30 seconds).
 4. The Dashboard parses the manifest and opens the item form.
 
@@ -174,7 +174,7 @@ get an email when it goes live or if anything needs changes.
 
 | Rejection reason | How we handled it |
 |---|---|
-| Description doesn't match functionality | Description describes only features that exist in v0.2.0. |
+| Description doesn't match functionality | Description describes only features that exist in v0.2.1. |
 | Excessive permissions | Only `activeTab`, `scripting`, `storage` — all justified. |
 | Missing privacy policy | `PRIVACY.md` ships in the repo. |
 | Remote code execution | Extension loads zero remote JS. Google Fonts is a CSS-only `<link>`. |
@@ -220,7 +220,7 @@ npm run compile && npm test && npm run test:e2e
 
 Drop the following links / files into your submission:
 
-- [x] **ZIP package** — `.output/onylogy-font-checker-0.2.0-chrome.zip`
+- [x] **ZIP package** — `.output/onylogy-font-checker-0.2.1-chrome.zip`
 - [x] **5 screenshots** — 1280×800, in the order from § B-1
 - [x] **Small promo tile** — 440×280, no alpha
 - [ ] **Marquee** — 1400×560 (optional but recommended)

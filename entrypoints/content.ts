@@ -31,6 +31,16 @@ import type { ElementTypography, HierarchyReport, ThemeName } from '../src/share
 let lastHierarchyReport: HierarchyReport | null = null;
 
 export default defineContentScript({
+  // `registration: 'runtime'` tells WXT to BUILD this script as a standalone
+  // bundle but NOT to declare it under `content_scripts` in the manifest.
+  // The popup and background both inject it on demand via
+  // chrome.scripting.executeScript when the user invokes the extension —
+  // so the extension only touches a tab when the user explicitly opts in.
+  //
+  // Without this, the manifest declares `<all_urls>` matches and Chrome
+  // Web Store flags the listing with "Because of the host permission, your
+  // extension may require an in-depth review", delaying publication.
+  registration: 'runtime',
   matches: ['<all_urls>'],
   runAt: 'document_idle',
   cssInjectionMode: 'manual',

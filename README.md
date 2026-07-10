@@ -11,7 +11,7 @@ Hover any text to see its exact font family, weight, size, line height, letter s
 By **[Onylogy Studio](https://github.com/ehasan28)** · Created by **[Ehasanul Haque](https://github.com/ehasan28)**
 
 [![Chrome Extension](https://img.shields.io/badge/Chrome-Manifest_V3-004BD1?style=flat-square&logo=googlechrome&logoColor=white)](#install)
-[![Version](https://img.shields.io/badge/version-0.2.0-004BD1?style=flat-square)](#changelog)
+[![Version](https://img.shields.io/badge/version-0.2.1-004BD1?style=flat-square)](#changelog)
 [![License](https://img.shields.io/badge/license-MIT-004BD1?style=flat-square)](#license)
 [![Built with WXT](https://img.shields.io/badge/built_with-WXT-004BD1?style=flat-square)](https://wxt.dev)
 [![React 19](https://img.shields.io/badge/React-19-004BD1?style=flat-square&logo=react&logoColor=white)](https://react.dev)
@@ -370,6 +370,11 @@ The extension is dormant until you click the toolbar icon or press the shortcut.
 The build is Manifest V3 and works on Chromium-based browsers (Chrome, Edge, Brave, Vivaldi, Arc, Opera). A Firefox build is on the roadmap.
 
 ## Changelog
+
+### 0.2.1
+
+- Switched content script to runtime registration so the manifest no longer declares `host_permissions` or auto-running content scripts. The script is now injected on demand via `chrome.scripting.executeScript` when the user invokes the extension. Removes the "in-depth review" warning on the Chrome Web Store listing.
+- Shortened the manifest description to fit Chrome's 132-character cap (long-form copy still lives in the store listing).
 
 ### 0.2.0
 
